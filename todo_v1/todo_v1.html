@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+  <meta charset="utf-8">
+  <script src="angular.min-1.0.7.js"></script>
+  <script src="app.js"></script>
+  <link rel="stylesheet" type="text/css" href="app.css">
+</head>
+
+<body>
+  <div class="todo-wrapper" ng-controller="TodoCtrl">
+    <h2>Количество задач: <span>{{getTotalTodos()}}</span></h2>    
+	<form>
+      <input placeholder="Мне нужно..." type="text" ng-model="formTodoText" ng-model-instant />
+      <button class="btn" ng-click="addTodo()">Добавить</button>
+	<form>	
+		<button class="btn" ng-click="invertAll()">Инвертировать</button>
+    </form>
+    <ul>
+      <li ng-repeat="todo in todos">
+        <input type="checkbox" ng-model="todo.done" />
+        <span>{{todo.text}}</span>
+      </li>
+    </ul>    
+  </div>
+</body>
+
+</html>
