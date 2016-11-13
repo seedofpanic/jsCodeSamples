@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+Создать простое приложение, состоящее из нескольких файлов.
+1 файл:
+объект со следующими свойствами:
+(1) переменная булевая. По умолчанию true
+(2) функция, изменяющая значение этой переменной и использующая для установки другую (следующую) функцию
+(3) функция (используемая), проверяющая, является ли переменная булевым значением, и в любом обратном случае возвращающая false
+2 файл:
+функция-конструктор объекта со следующими свойствами:
+функция, использующая функцию (2) из первого файла
+функция, возвращающая значение переменной (1) из первого файла
+Вся логика в файлах должна быть обёрнута в анонимные функции.
+-->
+
+<head>
+	<meta charset="utf-8">
+    <title>Наследование</title>
+    <!-- Хочу чтобы скрипты выполнились после загрузки страницы, даже в самых старых браузерах (defer) -->
+    <script src="./js/script1.js" defer></script>
+    <script src="./js/script2.js" defer></script>
+	
+	<script type="text/javascript">
+		function checkTask() {
+		    // Проверка с корректным значением
+			var check1 = new Script2(false);			
+			// Проверка с некорректным значением
+			var check2 = new Script2('Какой-нибудь текст');		
+			// Переменная по сути не меняется
+			var check3 = new Script2(true);				
+			
+			check1.CallScript1Setter();		
+			check2.CallScript1Setter();
+			check3.CallScript1Setter();
+			
+			document.write('<h1>Простое приложение, состоящее из нескольких файлов</h1>');
+			
+			document.write('<p>');
+			document.write('<h2>Проверка 1</h2>Ввод "false":<br> ' + check1.Getter());
+			document.write('<h2>Проверка 2</h2>Ввод "Какой-нибудь текст":<br> ' + check2.Getter());
+			document.write('<h2>Проверка 3</h2>Ввод "true":<br> ' + check3.Getter());
+			document.write('</p>');
+		}
+	</script >	
+	<script>
+		window.onload = function() {
+			checkTask();
+		};
+	</script>
+	
+</head>
+
+<body>
+    <h1>Пример 1</h1>
+	<p><a href="#" onClick="checkTask();">Проверка</a></p>
+</body>
+
+</html>
