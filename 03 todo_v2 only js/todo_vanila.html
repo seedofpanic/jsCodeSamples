@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>todo list js vanila</title>
+    <script type="text/javascript" >
+        var todoItem = function () {
+            var description = "";
+            var content = false;
+
+            this.Description = function (text) {
+                if (!arguments.length) return description;
+                description = text;
+            };
+
+            this.IsChecked = function (value) {
+                if (!arguments.length) return content;
+                content = value;
+            };
+        };
+
+        var todoModel = function () {
+            var array = [];
+
+            this.AddNew = function (_Description, _IsChecked) {
+                var nextElement = new todoItem();
+                nextElement.Description(_Description);
+                nextElement.IsChecked(_IsChecked);
+                array.push(nextElement);
+            };
+
+            this.ChangeCheckedByIndex = function (index, _IsChecked) {
+                array[index].IsChecked(_IsChecked);
+            };
+            this.GetByIndex = function (index) {
+                return array[index];
+            };
+            this.Count = function () {
+                return array.length;
+            };
+            this.Clear = function () {
+                array = [];
+            };
+        };
+
+        var EditValue = new todoModel();
+
+        var DoAddNew = function () {
+            var taskText = document.getElementById("taskText");
+            EditValue.AddNew(taskText.value, false);
+            RefreshView();
+        };
+
+        var checkBoxIdPrefix = "ID_";
+        var DoChangeCheckedById = function (PredefinedId, _IsChecked) {
+            if (PredefinedId.length < (checkBoxIdPrefix + 1)) return;
+
+            if (PredefinedId.substring(0, checkBoxIdPrefix.length) == checkBoxIdPrefix) {
+                var index = PredefinedId.substring(checkBoxIdPrefix.length).trim();
+
+                EditValue.ChangeCheckedByIndex(index, _IsChecked);
+            };
+        };
+
+        var DoClear = function () {
+            var userConfirmed = confirm("Очистить список задач?");
+            if (!userConfirmed) return;
+
+            EditValue.Clear();
+            RefreshView();
+        };
+
+        var RefreshView = function () {
+            var contentPane = document.getElementById("content");
+            contentPane.innerHTML = "";
+
+            var listSize = EditValue.Count();
+            var listElement;
+
+            for (var i = 0; i < listSize ; i++) {
+                listElement = EditValue.GetByIndex(i);
+                contentPane.innerHTML += GenCheckBoxTag(listElement.IsChecked(), listElement.Description(), i);
+            };
+        };
+
+        var GenCheckBoxTag = function (IsChecked, Text, Index) {
+            return "<input onchange=\"DoChangeCheckedById(this.id, this.checked)\" id =\"" + checkBoxIdPrefix + Index + " \" type=\"checkbox\" " + (IsChecked ? "checked" : "") + ">" + Text + "</input><br />";
+        };
+
+        window.onload = function () {
+            RefreshView();
+        };
+    </script>
+</head>
+<body>
+    <h1>TODO list</h1>
+    <h2>js vanila</h2>
+    <div>
+        <input id="taskText"/>
+        <br />
+        <input type="button" value="extendList" onclick="DoAddNew()" />
+        <br />
+        <input type="button" value="resetArray" onclick="DoClear()" />
+    </div>
+    <div id="content"></div> 
+</body>
+</html>
